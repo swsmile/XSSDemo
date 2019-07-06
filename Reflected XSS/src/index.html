@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>反射型 XSS</title>
+</head>
+
+<body>
+   我是包含反射型 XSS 攻击的页面。
+</body>
+
+<script src="jquery.js"></script>
+<script>
+    function getQueryString() {   
+    var qs = location.search.substr(1), // 获取url中"?"符后的字串   
+        args = {}, // 保存参数数据的对象
+        items = qs.length ? qs.split("&") : [], // 取得每一个参数项,
+        item = null,
+        len = items.length;
+
+    for(var i = 0; i < len; i++) {
+        item = items[i].split("=");
+        var name = decodeURIComponent(item[0]),
+            value = decodeURIComponent(item[1]);
+        if(name) {
+            args[name] = value;
+        }
+    }
+    return args;
+}
+    // 反射型 XSS 攻击
+    $(document).ready(function() {
+                var qs = getQueryString();  
+
+                var q1 = qs["query"]; // abc
+                    //登录失败(如果是用户登录成功时，还能够获取到用户的cookie)
+                    // location.href = `/error?type=<script>alert('恶意内容')<\/script>`;
+                    document.write('Current query is "' + q1 + '"');
+
+    });
+</script>
+
+</html>
