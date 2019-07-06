@@ -1,7 +1,7 @@
 {
-  "name": "XSS",
+  "name": "ReflectedXSS",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.4"
